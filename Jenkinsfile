@@ -21,6 +21,6 @@ node {
     stage('Email Notification') {
         mail bcc: '', body: '''Welcome to Jenkins email alerts
         Thanks
-        Pushpa''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'pushpa.munagala@pyramidci.com'
+        Pushpa''', cc: '', from: 'pushpa.munagala@pyramidci.com', replyTo: '', subject: 'Jenkins Job', to: 'pushpa.munagala@pyramidci.com'
     }
 }
