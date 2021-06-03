@@ -7,7 +7,7 @@ node {
 
     stage('Build image') {
   
-       app = docker.build("pushpamu/project_pyramidci")
+       app = docker.build("pushpamu/assignment4")
     }
 
     stage('Push image') {
