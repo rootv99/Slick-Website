@@ -17,4 +17,10 @@ node {
             app.push("latest")
         }
     }
+    
+    stage('Email Notification') {
+        mail bcc: '', body: '''Welcome to Jenkins email alerts
+        Thanks
+        Pushpa''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'pushpa.munagala@pyramidci.com'
+    }
 }
