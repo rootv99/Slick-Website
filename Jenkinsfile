@@ -1,26 +1,31 @@
-node {
-    def app
-
-    stage('Clone repository') {
-        checkout scm
+pipeline {
+  environment {
+    registry = "rootv/slick-website"
+    registryCredential = 'dockerhub'
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Clone Repo') {
+      steps {
+        git 'https://github.com/rootv99/Slick-Website.git'
+      }
     }
-
-    stage('Build image') {
-  
-       app = docker.build("pushpamu/project_pyramidci")
-    }
-
-    stage('Push image') {
-        
-        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
+    stage('Build Image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
+      }
     }
-    
-    stage('Email Notification') {
-        mail bcc: '', body: '''Welcome to Jenkins email alerts
-        Thanks
-        Pushpa''', cc: '', from: 'pushpa.munagala@pyramidci.com', replyTo: '', subject: 'Jenkins Job', to: 'pushpa.munagala@pyramidci.com'
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
     }
+  }
 }
