@@ -1,8 +1,3 @@
-FROM node:latest as node
-RUN mkdir -p /app
+FROM nginx
 WORKDIR /app
-COPY package*.json /app/
-RUN npm install 
-COPY . /app/
-EXPOSE 4200
-CMD ["npm", "run", "start"]
+COPY . /usr/share/nginx/html
