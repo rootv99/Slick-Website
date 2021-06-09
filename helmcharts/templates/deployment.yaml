@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slick-website-deploy
+  labels:
+    app: slick-website
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: slick-website
+      tier: web
+  template:
+    metadata:
+      #annotations:
+      labels:
+        app: slick-website
+        tier: web
+    spec:
+      #imagePullSecrets:
+      #serviceAccountName:
+      #securityContext:
+      containers:
+        - name: nginx
+          #securityContext:
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          #imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            #- name: http
+            - containerPort: {{ .Values.service.port }}
+              #protocol: TCP
+          #livenessProbe:
+            #httpGet:
+              #path: /
+              #port: http
+          #readinessProbe:
+            #httpGet:
+              #path: /
+              #port: http
+          resources: {{ toYaml .Values.resources | nindent 12 }}
+      #nodeSelector:
+      #affinity:
+      #tolerations:
