@@ -18,13 +18,18 @@ pipeline {
         }
       }
     }
-    stage('Deploy Image') {
+    stage('Push Image') {
       steps{
         script {
           docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
             dockerImage.push()
           }
         }
+      }
+    }
+    stage('Deploy Helm Charts') {
+      steps {
+        sh 'helm upgrade --install --wait helmcharts ./helmcharts/'
       }
     }
   }
